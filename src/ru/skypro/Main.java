@@ -1,5 +1,7 @@
 package ru.skypro;
 
+import org.w3c.dom.ls.LSOutput;
+
 import java.util.*;
 
 public class Main {
@@ -11,6 +13,14 @@ public class Main {
         String str = "Кто он такой? Кто он такой? Тайро - маленький автобус!";
         unicalWords(str);
         System.out.println("В строке: " + str + " " + numberOfDoubles(str) + " повторений");
+        List<Integer> list = new ArrayList<>(List.of(8, 6, 2, 9, 2, 3, 4, 4, 4, 2, 6, 7));
+        System.out.println("Усложнённое задание:");
+        System.out.println(list);
+        listChangeToNullAndOne(list);
+        System.out.println("Проверяем на одни и теже буквы");
+        System.out.println(compareWords("abbabdk", "bbaddaab"));
+        System.out.println("Проверяем на онограмму");
+        System.out.println(isOnogramma("cat", "act"));
     }
 
     public static void oddNumbersFromList(List<Integer> list) {
@@ -83,4 +93,77 @@ public class Main {
         }
         return words1;
     }
+
+    /*Методы усложненногт задания*/
+    /*Можно сделать метод, который возвращает значения, но я сделал метод void,
+     * чтобы он печатал и новый список и значение, для проверки*/
+    public static void listChangeToNullAndOne(List<Integer> list) {
+        for (int i = 0; i < list.size(); i++) {
+            if (i != list.lastIndexOf(list.get(i))) {
+                for (int j = i; j < list.size(); j++) {
+                    if (i != j && list.get(i).equals(list.get(j))) {
+                        list.set(j, 0);
+                    }
+                }
+                list.set(i, 0);
+            } else {
+                if (list.get(i) != 0) {
+                    list.set(i, 1);
+                }
+            }
+        }
+        System.out.println(list);
+        Integer sum = 0;
+        for (Integer integer : list) {
+            sum += integer;
+        }
+        System.out.println("Количество уникальных чисел в списке равно " + sum);
+    }
+
+    public static boolean compareWords(String s1, String s2) {
+        Set<Character> set1 = new HashSet<>(listFromString(s1));
+        Set<Character> set2 = new HashSet<>(listFromString(s2));
+        if (set1.size() == set2.size()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isOnogramma(String s1, String s2) {
+        List<Character> list1 = listFromString(s1);
+        List<Character> list2 = listFromString(s2);
+        Set<Character> set = new HashSet<>(list1);
+        int count1 = 0, count2 = 0;
+        for (Character character : set) {
+            for (int i = 0; i < list1.size(); i++) {
+                if (character.equals(list1.get(i))) {
+                    count1++;
+                }
+            }
+        }
+        for (Character character : set) {
+            for (int i = 0; i < list2.size(); i++) {
+                if (character.equals(list2.get(i))) {
+                    count2++;
+                }
+            }
+        }
+        if (count1 == count2) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /*Метод последних двух заданий, делающий из слова список Character*/
+    public static List<Character> listFromString(String s) {
+        char[] arr = s.toCharArray();
+        List<Character> list = new ArrayList<>();
+        for (int i = 0; i < arr.length; i++) {
+            list.add(Character.valueOf(arr[i]));
+        }
+        return list;
+    }
 }
+
